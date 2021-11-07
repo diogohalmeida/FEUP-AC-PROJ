@@ -1,4 +1,44 @@
 import pandas as pd
+import numpy as np
+import seaborn as sb
+import matplotlib.pyplot as plt
+
+def isDistNormal(col_name, test):
+
+    #print(test["unemploymant rate '95 "])
+
+    x, y = ecdf(test[col_name])
+
+    plt.figure(figsize=(10,7))
+    sb.set()
+    plt.plot(x, y, marker=".", linestyle="none")
+    plt.xlabel("Body Temperature (F)")
+    plt.ylabel("Cumulative Distribution Function")
+
+    samples = np.random.normal(np.mean(test[col_name]), np.std(test[col_name]), size=10000)
+
+    x_theor, y_theor = ecdf(samples)
+
+    plt.plot(x_theor, y_theor)
+    plt.legend(('Empirical Data','Normal Distribution'), loc='lower right')
+
+    #periscope.output(plt)
+
+    #print(stats.normaltest(test[col_name]))
+
+def ecdf(data):
+    """Compute ECDF for a one-dimensional array of measurements."""
+
+    # Number of data points: n
+    n = len(data)
+
+    # x-data for the ECDF: x
+    x = np.sort(data)
+
+    # y-data for the ECDF: y
+    y = np.arange(1, n+1) / n
+
+    return x, y
 
 print("::::PROCESSING::::")
 
