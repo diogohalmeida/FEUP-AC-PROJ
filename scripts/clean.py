@@ -1,21 +1,60 @@
 import pandas as pd
-from process import isDistNormal
+import numpy as np
+import seaborn as sb
+import matplotlib.pyplot as plt
+
+def ecdf(data):
+    """Compute ECDF for a one-dimensional array of measurements."""
+
+    # Number of data points: n
+    n = len(data)
+
+    # x-data for the ECDF: x
+    x = np.sort(data)
+
+    # y-data for the ECDF: y
+    y = np.arange(1, n+1) / n
+
+    return x, y
+
+def isDistNormal(col_name, test):
+
+    #print(test["unemploymant rate '95 "])
+
+    x, y = ecdf(test[col_name])
+
+    plt.figure(figsize=(10,7))
+    sb.set()
+    plt.plot(x, y, marker=".", linestyle="none")
+    plt.xlabel("Body Temperature (F)")
+    plt.ylabel("Cumulative Distribution Function")
+
+    samples = np.random.normal(np.mean(test[col_name]), np.std(test[col_name]), size=10000)
+
+    x_theor, y_theor = ecdf(samples)
+
+    plt.plot(x_theor, y_theor)
+    plt.legend(('Empirical Data','Normal Distribution'), loc='lower right')
+
+    #periscope.output(plt)
+
+    #print(stats.normaltest(test[col_name]))
 
 print("::::CLEANING::::")
 
-account = pd.read_csv("dev/account_loaded.csv", sep=";")
+account = pd.read_csv("dev/account_loaded.csv")
 account.to_csv("dev/account_clean.csv", index=False)
 
-card = pd.read_csv("dev/card_loaded.csv", sep=";")
+card = pd.read_csv("dev/card_loaded.csv")
 card.to_csv("dev/card_clean.csv", index=False)
 
-client = pd.read_csv("dev/client_loaded.csv", sep=";")
+client = pd.read_csv("dev/client_loaded.csv")
 client.to_csv("dev/client_clean.csv", index=False)
 
-disp = pd.read_csv("dev/disp_loaded.csv", sep=";")
+disp = pd.read_csv("dev/disp_loaded.csv")
 disp.to_csv("dev/disp_clean.csv", index=False)
 
-district = pd.read_csv("dev/district_loaded.csv", sep=";")
+district = pd.read_csv("dev/district_loaded.csv")
 district.drop(['name','region'], axis=1, inplace=True)
 print("Removing 'name' and 'region' columns from district data")
 
@@ -34,10 +73,10 @@ isDistNormal("no. of commited crimes '95 ", test_2)
 
 district.to_csv("dev/district_clean.csv", index=False)
 
-loan = pd.read_csv("dev/loan_loaded.csv", sep=";")
+loan = pd.read_csv("dev/loan_loaded.csv")
 loan.to_csv("dev/loan_clean.csv", index=False)
 
-trans = pd.read_csv("dev/trans_loaded.csv", sep=";")
+trans = pd.read_csv("dev/trans_loaded.csv")
 trans["type"] = [i if i != "withdrawal in cash" else "withdrawal" for i in trans["type"]]
 print("Renaming rows where type='withdrawal in cash' to 'withdrawal'")
 trans["k_symbol"] = ["" if type(i) != str or i == " " else i for i in trans["k_symbol"]]

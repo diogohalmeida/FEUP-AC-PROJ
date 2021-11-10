@@ -2,19 +2,19 @@ import pandas as pd
 
 print("::::MERGING::::")
 
-account = pd.read_csv("dev/account_clean.csv", sep=";")
+account = pd.read_csv("dev/account_clean.csv")
 
-card = pd.read_csv("dev/card_clean.csv", sep=";")
+card = pd.read_csv("dev/card_clean.csv")
 
-client = pd.read_csv("dev/client_clean.csv", sep=";")
+client = pd.read_csv("dev/client_clean.csv")
 
-disp = pd.read_csv("dev/disp_clean.csv", sep=";")
+disp = pd.read_csv("dev/disp_clean.csv")
 
-district = pd.read_csv("dev/district_clean.csv", sep=";")
+district = pd.read_csv("dev/district_clean.csv")
 
-loan = pd.read_csv("dev/loan_clean.csv", sep=";")
+loan = pd.read_csv("dev/loan_clean.csv")
 
-trans = pd.read_csv("dev/trans_clean.csv", sep=";")
+trans = pd.read_csv("dev/trans_clean.csv")
 
 
 client_disp = pd.merge(client, disp, on="client_id")
