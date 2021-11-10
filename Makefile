@@ -17,7 +17,7 @@ merge: clean-data
 	python3 -B scripts/merge.py >> logs/$(logfile)
 
 clean-data: load
-	python3 -B scripts/clean.py >> logs/$(logifle)
+	python3 -B scripts/clean.py >> logs/$(logfile)
 
 load:
 	python3 -B scripts/load.py >> logs/$(logfile)
