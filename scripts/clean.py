@@ -3,42 +3,6 @@ import numpy as np
 import seaborn as sb
 import matplotlib.pyplot as plt
 
-def ecdf(data):
-    """Compute ECDF for a one-dimensional array of measurements."""
-
-    # Number of data points: n
-    n = len(data)
-
-    # x-data for the ECDF: x
-    x = np.sort(data)
-
-    # y-data for the ECDF: y
-    y = np.arange(1, n+1) / n
-
-    return x, y
-
-def isDistNormal(col_name, test):
-
-    #print(test["unemploymant rate '95 "])
-
-    x, y = ecdf(test[col_name])
-
-    plt.figure(figsize=(10,7))
-    sb.set()
-    plt.plot(x, y, marker=".", linestyle="none")
-    plt.xlabel("Body Temperature (F)")
-    plt.ylabel("Cumulative Distribution Function")
-
-    samples = np.random.normal(np.mean(test[col_name]), np.std(test[col_name]), size=10000)
-
-    x_theor, y_theor = ecdf(samples)
-
-    plt.plot(x_theor, y_theor)
-    plt.legend(('Empirical Data','Normal Distribution'), loc='lower right')
-
-    #periscope.output(plt)
-
-    #print(stats.normaltest(test[col_name]))
 
 print("::::CLEANING::::")
 
@@ -65,11 +29,14 @@ test["unemploymant rate '95 "] = [float(x) for x in test["unemploymant rate '95 
 mean_rate = test["unemploymant rate '95 "].mean()
 
 district["unemploymant rate '95 "] = [mean_rate if x == "?" else float(x) for x in district["unemploymant rate '95 "]]
-print("Replacing missing vaule in 'unemploymant rate '95 ' with mean of column and converting the whole column to float")
+print("Replacing missing value in 'unemploymant rate '95 ' with mean of column and converting the whole column to float")
+
+mean_no = test_2["no. of commited crimes '95 "].mean()
+
+districts["no. of commited crimes '95 "] = [mean_no if x == "?" else float(x) for x in districts["no. of commited crimes '95 "]]
 
 test_2 = district.loc[district["no. of commited crimes '95 "] != '?']
 test_2["no. of commited crimes '95 "] = [float(x) for x in test["no. of commited crimes '95 "]]
-isDistNormal("no. of commited crimes '95 ", test_2)
 
 district.to_csv("dev/district_clean.csv", index=False)
 

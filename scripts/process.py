@@ -50,8 +50,6 @@ import matplotlib.pyplot as plt
 
 # Create correlation matrix
 corr_matrix = merged.corr().abs()
-plt.figure(figsize = (20,6))
-sb.heatmap(corr_matrix,annot=True)
 
 # Select upper triangle of correlation matrix
 upper = corr_matrix.where(np.triu(np.ones(corr_matrix.shape), k=1).astype(bool))
@@ -67,6 +65,13 @@ print("{} Dropped columns: {} due to correlation > 0.95".format(len(to_drop), to
 # Removing rows with nan values for status
 merged.dropna(subset=["status"], inplace=True)
 print("Removing rows with nan values for 'status'")
+
+# Dealing with missing values
+for i in merged.columns:
+    if merged[i].dtype == object:
+        merged = pd.get_dummies(merged, columns = [i])
+merged["issued"].fillna(0, inplace=True)
+merged["account"].fillna(0, inplace=True)
 
 # Saving final result to csv
 merged.to_csv("dev/processed.csv", index=False)
