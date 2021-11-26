@@ -1,4 +1,4 @@
-loan_id;account_id;date_loan;amount_loan;duration;payments;status
+loan_id;account_id;date;amount;duration;payments;status
 5314;1787;930705;96396;12;8033;-1
 5316;1801;930711;165960;36;4610;1
 6863;9188;930728;127080;60;2118;1

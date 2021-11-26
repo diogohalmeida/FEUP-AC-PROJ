@@ -1,4 +1,4 @@
-trans_id;account_id;date_trans;type_trans;operation;amount_trans;balance;k_symbol;bank;account
+trans_id;account_id;date;type;operation;amount;balance;k_symbol;bank;account
 6145;25;960728;credit;credit in cash;900.00;900.00;;;
 6456;25;960827;credit;credit in cash;15800.00;16700.00;;;
 6150;25;960903;credit;credit in cash;13067.00;29767.00;;;

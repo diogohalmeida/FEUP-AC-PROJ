@@ -1,4 +1,4 @@
-card_id;disp_id;type_card;date_card
+card_id;disp_id;type;issued
 1005;9285;classic;931107
 104;588;classic;940119
 747;4915;classic;940205
