@@ -154,8 +154,8 @@ def nearest(items, pivot):
     items_clean = [i for i in items if pivot >= i]
     return min(items_clean, key=lambda x: pivot - x)
 
-
-
+std_balances = []
+loan_year= []
 min_balances = []
 max_balances = []
 mean_balances = []
@@ -178,6 +178,7 @@ for account_id in loan_train["account_id"]:
     min_balance = min(balance_list)
     max_balance = max(balance_list)
     mean_balance = sum(balance_list)/len(balance_list)
+    std_balance = np.array(balance_list).std()
     
     trans_date_list = full_data_rows["date_trans"].tolist()
     loan_date = loan_row["date_loan"].tolist()[0]
@@ -190,6 +191,7 @@ for account_id in loan_train["account_id"]:
     min_balances.append(min_balance)
     max_balances.append(max_balance)
     mean_balances.append(mean_balance)
+    std_balances.append(std_balance)
     recent_balances.append(recent_balance)
     
     
@@ -207,6 +209,7 @@ for account_id in loan_train["account_id"]:
     
     
     #OWNER AGE AT LOAN CALC
+    loan_year.append(loan_row["date_loan"].tolist()[0].year)
     owner_age_at_loan = (loan_row["date_loan"].tolist()[0] - (full_data_rows.loc[full_data_rows['type_disp'] == "OWNER"]["birthdate"].tolist()[0])).days//365
     owner_ages_at_loan.append(owner_age_at_loan)
     
@@ -250,6 +253,7 @@ for account_id in loan_train["account_id"]:
 loan_clean = loan_train.drop(columns=["date_loan"])
 
 
+loan_clean["loan_year"] = loan_year
 loan_clean["owner_age_at_loan"] = owner_ages_at_loan
 loan_clean["owner_age_at_account_creation"] = owner_ages_at_account_creation
 loan_clean["has_disponent"] = account_has_disponent_list
@@ -260,6 +264,7 @@ loan_clean["has_gold_card"] = has_gold_card_list
 loan_clean["min_balance"] = min_balances
 loan_clean["max_balance"] = max_balances
 loan_clean["mean_balance"] = mean_balances
+loan_clean["std_balance"] = std_balances
 loan_clean["recent_balance"] = recent_balances
 
 loan_clean["total_credit"] = total_credit_list
