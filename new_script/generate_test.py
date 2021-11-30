@@ -181,6 +181,13 @@ account_has_disponent_list = []
 has_junior_card_list = []
 has_classic_card_list = []
 has_gold_card_list = []
+#k_symbol
+has_interest_credit_list = []
+has_payment_for_statement_list = []
+has_household_list = []
+has_old_age_pension_list = []
+has_insurrance_payment_list = []
+has_sanction_if_negative_list = []
 for account_id in loan_test["account_id"]:
     #TRANSACTION BALANCES CALC
     loan_row = loan_test.loc[loan_test['account_id'] == account_id]
@@ -256,6 +263,34 @@ for account_id in loan_test["account_id"]:
     has_classic_card_list.append(has_classic_card)
     has_gold_card_list.append(has_gold_card)
     
+    #REGISTER ACCOUNT K_SYMBOLS
+    k_symbols = full_data_rows["k_symbol"].tolist()
+    has_interest_credit = 0
+    has_payment_for_statement = 0
+    has_household = 0
+    has_old_age_pension = 0
+    has_insurrance_payment = 0
+    has_sanction_if_negative = 0
+    if 'interest credited' in k_symbols:
+        has_interest_credit = 1
+    if 'payment for statement' in k_symbols:
+        has_payment_for_statement = 1
+    if 'household' in k_symbols:
+        has_household = 1
+    if 'old-age pension' in k_symbols:
+        has_old_age_pension = 1
+    if 'insurrance payment' in k_symbols:
+        has_insurrance_payment = 1
+    if 'sanction interest if negative balance' in k_symbols:
+        has_sanction_if_negative = 1
+        
+    has_interest_credit_list.append(has_interest_credit)
+    has_payment_for_statement_list.append(has_payment_for_statement)
+    has_household_list.append(has_household)
+    has_old_age_pension_list.append(has_old_age_pension)
+    has_insurrance_payment_list.append(has_insurrance_payment)
+    has_sanction_if_negative_list.append(has_sanction_if_negative)
+    
 
 #START MERGING
 #DROP LOAN DATE(WILL HAVE OWNER AGE AT LOAN INSTEAD)
@@ -279,6 +314,13 @@ loan_clean["total_credit"] = total_credit_list
 loan_clean["total_withdrawal"] = total_withdrawal_list
 loan_clean["total_credit_times"] = total_credit_times_list
 loan_clean["total_withdrawal_times"] = total_withdrawal_times_list
+
+loan_clean["has_interest_credit"] = has_interest_credit_list
+loan_clean["has_payment_for_statement"] = has_payment_for_statement_list
+loan_clean["has_household"] = has_household_list
+loan_clean["has_old-age_pension"] = has_old_age_pension_list
+loan_clean["has_insurrance_payment"] = has_insurrance_payment_list
+loan_clean["has_sanction_interest_if_negative_balance"] = has_sanction_if_negative_list
 
 #MERGE WITH THE REST OF DATA
 loan_clean = pandas.merge(loan_clean, disp_client_account_district.loc[disp_client_account_district['type_disp'] == "OWNER"], on="account_id", how="inner")
