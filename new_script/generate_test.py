@@ -165,22 +165,37 @@ def nearest(items, pivot):
     return min(items_clean, key=lambda x: pivot - x)
 
 
-loan_year = []
+loan_year= []
+
+std_balances = []
 min_balances = []
 max_balances = []
 mean_balances = []
-std_balances = []
 recent_balances = []
+
 total_credit_list = []
-total_withdrawal_list = []
+min_credits = []
+max_credits = []
+mean_credits = []
+std_credits = []
 total_credit_times_list = []
+
+total_withdrawal_list = []
+min_withdrawals = []
+max_withdrawals = []
+mean_withdrawals = []
+std_withdrawals = []
 total_withdrawal_times_list = []
+
 owner_ages_at_loan = []
 owner_ages_at_account_creation = []
+
 account_has_disponent_list = []
+
 has_junior_card_list = []
 has_classic_card_list = []
 has_gold_card_list = []
+
 #k_symbol
 has_interest_credit_list = []
 has_payment_for_statement_list = []
@@ -215,14 +230,46 @@ for account_id in loan_test["account_id"]:
     
     #TOTAL CREDIT/WITHDRAWAL
     #TOTAL TIMES CREDIT/WITHDRAW
-    total_credit = sum(full_data_rows.loc[full_data_rows['type_trans'] == "credit"]["amount"].tolist())
-    total_credit_times = len(full_data_rows.loc[full_data_rows['type_trans'] == "credit"]["amount"].tolist())
+    #MAX, MIN, MEAN AND STD CREDIT/WITHDRAWAL
+    credit_list = full_data_rows.loc[full_data_rows['type_trans'] == "credit"]["amount"].tolist()
+    total_credit = sum(credit_list)
+    total_credit_times = len(credit_list)
+    if total_credit_times != 0:
+        min_credit = min(credit_list)
+        max_credit = max(credit_list)
+        mean_credit = sum(credit_list)/len(credit_list)
+        std_credit = np.array(credit_list).std()
+    else:
+        min_credit = 0
+        max_credit = 0
+        mean_credit = 0
+        std_credit = 0
     total_credit_list.append(total_credit)
     total_credit_times_list.append(total_credit_times)
-    total_withdrawal = sum(full_data_rows.loc[full_data_rows['type_trans'] == "withdrawal"]["amount"].tolist())
-    total_withdrawal_times = len(full_data_rows.loc[full_data_rows['type_trans'] == "withdrawal"]["amount"].tolist())
+    min_credits.append(min_credit)
+    max_credits.append(max_credit)
+    mean_credits.append(mean_credit)
+    std_credits.append(std_credit)
+    
+    withdrawal_list = full_data_rows.loc[full_data_rows['type_trans'] == "withdrawal"]["amount"].tolist()
+    total_withdrawal = sum(withdrawal_list)
+    total_withdrawal_times = len(withdrawal_list)
+    if total_withdrawal_times != 0:
+        min_withdrawal = min(withdrawal_list)
+        max_withdrawal = max(withdrawal_list)
+        mean_withdrawal= sum(withdrawal_list)/len(withdrawal_list)
+        std_withdrawal = np.array(withdrawal_list).std()
+    else:
+        min_withdrawal = 0
+        max_withdrawal = 0
+        mean_withdrawal = 0
+        std_withdrawal = 0
     total_withdrawal_list.append(total_withdrawal)
     total_withdrawal_times_list.append(total_withdrawal_times)
+    min_withdrawals.append(min_withdrawal)
+    max_withdrawals.append(max_withdrawal)
+    mean_withdrawals.append(mean_withdrawal)
+    std_withdrawals.append(std_withdrawal)
     
     #OWNER AGE AT LOAN CALC
     loan_year.append(loan_row["date_loan"].tolist()[0].year)
@@ -296,6 +343,7 @@ for account_id in loan_test["account_id"]:
 #DROP LOAN DATE(WILL HAVE OWNER AGE AT LOAN INSTEAD)
 loan_clean = loan_test.drop(columns=["date_loan"])
 
+
 loan_clean["loan_year"] = loan_year
 loan_clean["owner_age_at_loan"] = owner_ages_at_loan
 loan_clean["owner_age_at_account_creation"] = owner_ages_at_account_creation
@@ -311,7 +359,15 @@ loan_clean["std_balance"] = std_balances
 loan_clean["recent_balance"] = recent_balances
 
 loan_clean["total_credit"] = total_credit_list
+loan_clean["min_credit"] = min_credits
+loan_clean["max_credit"] = max_credits
+loan_clean["mean_credit"] = mean_credits
+loan_clean["std_credit"] = std_credits
 loan_clean["total_withdrawal"] = total_withdrawal_list
+loan_clean["min_withdrawal"] = min_withdrawals
+loan_clean["max_withdrawal"] = max_withdrawals
+loan_clean["mean_withdrawal"] = mean_withdrawals
+loan_clean["std_withdrawal"] = std_withdrawals
 loan_clean["total_credit_times"] = total_credit_times_list
 loan_clean["total_withdrawal_times"] = total_withdrawal_times_list
 
