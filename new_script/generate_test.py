@@ -8,7 +8,7 @@ Created on Wed Nov 24 11:11:37 2021
 import pandas
 from collections import Counter
 import numpy as np
-
+import math
 
 disp = pandas.read_csv("dataset/disp.csv", sep=";")
 
@@ -203,6 +203,16 @@ has_household_list = []
 has_old_age_pension_list = []
 has_insurrance_payment_list = []
 has_sanction_if_negative_list = []
+
+#operation types
+credits_in_cash_list = []
+collections_from_bank_list = []
+withdrawals_in_cash_list = []
+remittances_to_bank_list =[]
+credit_card_withdrawals_list = []
+
+months_until_bankrupt_list = []
+months_until_bankrupt_loan_duration_diff_list = []
 for account_id in loan_test["account_id"]:
     #TRANSACTION BALANCES CALC
     loan_row = loan_test.loc[loan_test['account_id'] == account_id]
@@ -312,24 +322,12 @@ for account_id in loan_test["account_id"]:
     
     #REGISTER ACCOUNT K_SYMBOLS
     k_symbols = full_data_rows["k_symbol"].tolist()
-    has_interest_credit = 0
-    has_payment_for_statement = 0
-    has_household = 0
-    has_old_age_pension = 0
-    has_insurrance_payment = 0
-    has_sanction_if_negative = 0
-    if 'interest credited' in k_symbols:
-        has_interest_credit = 1
-    if 'payment for statement' in k_symbols:
-        has_payment_for_statement = 1
-    if 'household' in k_symbols:
-        has_household = 1
-    if 'old-age pension' in k_symbols:
-        has_old_age_pension = 1
-    if 'insurrance payment' in k_symbols:
-        has_insurrance_payment = 1
-    if 'sanction interest if negative balance' in k_symbols:
-        has_sanction_if_negative = 1
+    has_interest_credit = Counter(k_symbols)['interest credited']
+    has_payment_for_statement = Counter(k_symbols)['payment for statement']
+    has_household = Counter(k_symbols)['household']
+    has_old_age_pension = Counter(k_symbols)['old-age pension']
+    has_insurrance_payment = Counter(k_symbols)['insurrance payment']
+    has_sanction_if_negative = Counter(k_symbols)['sanction interest if negative balance']
         
     has_interest_credit_list.append(has_interest_credit)
     has_payment_for_statement_list.append(has_payment_for_statement)
@@ -338,6 +336,30 @@ for account_id in loan_test["account_id"]:
     has_insurrance_payment_list.append(has_insurrance_payment)
     has_sanction_if_negative_list.append(has_sanction_if_negative)
     
+    #OPERATIONS LIST
+    operations = full_data_rows["operation"].tolist()
+    
+    credits_in_cash = Counter(operations)['credit in cash']
+    collections_from_bank = Counter(operations)['collection from another bank']
+    withdrawals_in_cash = Counter(operations)['withdrawal in cash']
+    remittances_to_bank = Counter(operations)['remittance to another bank']
+    credit_card_withdrawals = Counter(operations)['credit card withdrawal']
+
+    credits_in_cash_list.append(credits_in_cash)
+    collections_from_bank_list.append(collections_from_bank)
+    withdrawals_in_cash_list.append(withdrawals_in_cash)
+    remittances_to_bank_list.append(remittances_to_bank)
+    credit_card_withdrawals_list.append(credit_card_withdrawals)
+    
+    
+    #MONTHS UNTIL BANKRUPT
+    months_until_bankrupt = math.floor(recent_balance/loan_row["payments"].tolist()[0])
+    months_until_bankrupt_list.append(months_until_bankrupt)
+    
+    #MONTHS UNTIL BANKRUPT AND LOAN DURATION DIFF
+    months_until_bankrupt_loan_duration_diff_list.append(months_until_bankrupt-loan_row["duration"].tolist()[0])
+
+
 
 #START MERGING
 #DROP LOAN DATE(WILL HAVE OWNER AGE AT LOAN INSTEAD)
@@ -371,12 +393,21 @@ loan_clean["std_withdrawal"] = std_withdrawals
 loan_clean["total_credit_times"] = total_credit_times_list
 loan_clean["total_withdrawal_times"] = total_withdrawal_times_list
 
-loan_clean["has_interest_credit"] = has_interest_credit_list
-loan_clean["has_payment_for_statement"] = has_payment_for_statement_list
-loan_clean["has_household"] = has_household_list
-loan_clean["has_old-age_pension"] = has_old_age_pension_list
-loan_clean["has_insurrance_payment"] = has_insurrance_payment_list
-loan_clean["has_sanction_interest_if_negative_balance"] = has_sanction_if_negative_list
+loan_clean["interest_credit"] = has_interest_credit_list
+loan_clean["payment_for_statement"] = has_payment_for_statement_list
+loan_clean["household"] = has_household_list
+loan_clean["old-age_pension"] = has_old_age_pension_list
+loan_clean["insurrance_payment"] = has_insurrance_payment_list
+loan_clean["sanction_interest_if_negative_balance"] = has_sanction_if_negative_list
+
+loan_clean["credit_in_cash"] = credits_in_cash_list
+loan_clean["collection_from_another_bank"] = collections_from_bank_list
+loan_clean["withdrawal_in_cash"] = withdrawals_in_cash_list
+loan_clean["remittance_to_another_bank"] = remittances_to_bank_list
+loan_clean["credit_card_withdrawal"] = credit_card_withdrawals_list
+
+loan_clean["months_until_bankrupt"] = months_until_bankrupt_list
+loan_clean["months_until_bankrupt_loan_duration_diff"] = months_until_bankrupt_loan_duration_diff_list
 
 #MERGE WITH THE REST OF DATA
 loan_clean = pandas.merge(loan_clean, disp_client_account_district.loc[disp_client_account_district['type_disp'] == "OWNER"], on="account_id", how="inner")
