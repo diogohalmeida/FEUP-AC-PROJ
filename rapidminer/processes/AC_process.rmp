@@ -12,123 +12,14 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="false" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve dataset_development" width="90" x="715" y="289">
-        <parameter key="repository_entry" value="../data/dataset_development"/>
-      </operator>
-      <operator activated="false" class="select_attributes" compatibility="9.10.001" expanded="true" height="82" name="Select Attributes" width="90" x="849" y="289">
-        <parameter key="attribute_filter_type" value="subset"/>
-        <parameter key="attribute" value=""/>
-        <parameter key="attributes" value="date_card|type_card"/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="attribute_value"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="time"/>
-        <parameter key="block_type" value="attribute_block"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="value_matrix_row_start"/>
-        <parameter key="invert_selection" value="true"/>
-        <parameter key="include_special_attributes" value="false"/>
-      </operator>
-      <operator activated="true" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve loans_train" width="90" x="514" y="391">
-        <parameter key="repository_entry" value="../data_AC/loans_train"/>
-      </operator>
-      <operator activated="true" class="set_role" compatibility="9.10.001" expanded="true" height="82" name="Set Role" width="90" x="648" y="493">
-        <parameter key="attribute_name" value="status"/>
-        <parameter key="target_role" value="label"/>
-        <list key="set_additional_roles"/>
-      </operator>
-      <operator activated="true" class="numerical_to_binominal" compatibility="9.10.001" expanded="true" height="82" name="Numerical to Binominal (3)" width="90" x="782" y="493">
-        <parameter key="attribute_filter_type" value="single"/>
-        <parameter key="attribute" value="status"/>
-        <parameter key="attributes" value=""/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="numeric"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="real"/>
-        <parameter key="block_type" value="value_series"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="value_series_end"/>
-        <parameter key="invert_selection" value="false"/>
-        <parameter key="include_special_attributes" value="true"/>
-        <parameter key="min" value="-1.0"/>
-        <parameter key="max" value="-1.0"/>
-      </operator>
-      <operator activated="true" class="nominal_to_numerical" compatibility="9.10.001" expanded="true" height="103" name="Nominal to Numerical" width="90" x="916" y="493">
-        <parameter key="return_preprocessing_model" value="false"/>
-        <parameter key="create_view" value="false"/>
-        <parameter key="attribute_filter_type" value="all"/>
-        <parameter key="attribute" value=""/>
-        <parameter key="attributes" value=""/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="nominal"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="file_path"/>
-        <parameter key="block_type" value="single_value"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="single_value"/>
-        <parameter key="invert_selection" value="false"/>
-        <parameter key="include_special_attributes" value="false"/>
-        <parameter key="coding_type" value="dummy coding"/>
-        <parameter key="use_comparison_groups" value="false"/>
-        <list key="comparison_groups"/>
-        <parameter key="unexpected_value_handling" value="all 0 and warning"/>
-        <parameter key="use_underscore_in_name" value="false"/>
-      </operator>
-      <operator activated="true" class="numerical_to_binominal" compatibility="9.10.001" expanded="true" height="82" name="Numerical to Binominal (2)" width="90" x="1050" y="493">
-        <parameter key="attribute_filter_type" value="subset"/>
-        <parameter key="attribute" value=""/>
-        <parameter key="attributes" value="frequency = issuance after transaction|frequency = monthly issuance|frequency = weekly issuance|has_classic_card|has_disponent|has_gold_card|has_junior_card|sex = female|sex = male|has_insurrance_payment|has_interest_credit|has_old-age_pension|has_payment_for_statement|has_sanction_interest_if_negative_balance|has_household"/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="numeric"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="real"/>
-        <parameter key="block_type" value="value_series"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="value_series_end"/>
-        <parameter key="invert_selection" value="false"/>
-        <parameter key="include_special_attributes" value="false"/>
-        <parameter key="min" value="0.0"/>
-        <parameter key="max" value="0.0"/>
-      </operator>
-      <operator activated="true" class="retrieve" compatibility="9.10.001" expanded="true" height="68" name="Retrieve loans_test" width="90" x="514" y="646">
-        <parameter key="repository_entry" value="../data_AC/loans_test"/>
-      </operator>
-      <operator activated="true" class="nominal_to_numerical" compatibility="9.10.001" expanded="true" height="103" name="Nominal to Numerical (2)" width="90" x="782" y="646">
-        <parameter key="return_preprocessing_model" value="false"/>
-        <parameter key="create_view" value="false"/>
-        <parameter key="attribute_filter_type" value="all"/>
-        <parameter key="attribute" value=""/>
-        <parameter key="attributes" value=""/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="nominal"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="file_path"/>
-        <parameter key="block_type" value="single_value"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="single_value"/>
-        <parameter key="invert_selection" value="false"/>
-        <parameter key="include_special_attributes" value="false"/>
-        <parameter key="coding_type" value="dummy coding"/>
-        <parameter key="use_comparison_groups" value="false"/>
-        <list key="comparison_groups"/>
-        <parameter key="unexpected_value_handling" value="all 0 and warning"/>
-        <parameter key="use_underscore_in_name" value="false"/>
-      </operator>
-      <operator activated="true" class="numerical_to_binominal" compatibility="9.10.001" expanded="true" height="82" name="Numerical to Binominal" width="90" x="983" y="697">
-        <parameter key="attribute_filter_type" value="subset"/>
-        <parameter key="attribute" value=""/>
-        <parameter key="attributes" value="frequency = issuance after transaction|frequency = monthly issuance|frequency = weekly issuance|has_classic_card|has_disponent|has_gold_card|has_household|has_insurrance_payment|has_interest_credit|has_junior_card|has_old-age_pension|has_payment_for_statement|has_sanction_interest_if_negative_balance|sex = female|sex = male"/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="numeric"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="real"/>
-        <parameter key="block_type" value="value_series"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="value_series_end"/>
-        <parameter key="invert_selection" value="false"/>
-        <parameter key="include_special_attributes" value="false"/>
-        <parameter key="min" value="0.0"/>
-        <parameter key="max" value="0.0"/>
+      <operator activated="true" class="productivity:execute_process" compatibility="9.10.001" expanded="true" height="68" name="Execute get_train" width="90" x="782" y="391">
+        <parameter key="process_location" value="get_data/get_train"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros"/>
+        <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
       <operator activated="true" class="split_validation" compatibility="9.10.001" expanded="true" height="124" name="Validation" width="90" x="1184" y="340">
         <parameter key="create_complete_model" value="false"/>
@@ -316,6 +207,15 @@
           <portSpacing port="sink_averagable 2" spacing="0"/>
         </process>
       </operator>
+      <operator activated="true" class="productivity:execute_process" compatibility="9.10.001" expanded="true" height="68" name="Execute get_test" width="90" x="782" y="544">
+        <parameter key="process_location" value="get_data/get_test"/>
+        <parameter key="use_input" value="true"/>
+        <parameter key="store_output" value="false"/>
+        <parameter key="propagate_metadata_recursively" value="true"/>
+        <parameter key="cache_process" value="true"/>
+        <list key="macros"/>
+        <parameter key="fail_for_unknown_macros" value="true"/>
+      </operator>
       <operator activated="true" class="apply_model" compatibility="9.10.001" expanded="true" height="82" name="Apply Model" width="90" x="1184" y="697">
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
@@ -330,17 +230,10 @@
         <parameter key="append_to_file" value="false"/>
         <parameter key="encoding" value="SYSTEM"/>
       </operator>
-      <connect from_op="Retrieve dataset_development" from_port="output" to_op="Select Attributes" to_port="example set input"/>
-      <connect from_op="Retrieve loans_train" from_port="output" to_op="Set Role" to_port="example set input"/>
-      <connect from_op="Set Role" from_port="example set output" to_op="Numerical to Binominal (3)" to_port="example set input"/>
-      <connect from_op="Numerical to Binominal (3)" from_port="example set output" to_op="Nominal to Numerical" to_port="example set input"/>
-      <connect from_op="Nominal to Numerical" from_port="example set output" to_op="Numerical to Binominal (2)" to_port="example set input"/>
-      <connect from_op="Numerical to Binominal (2)" from_port="example set output" to_op="Validation" to_port="training"/>
-      <connect from_op="Retrieve loans_test" from_port="output" to_op="Nominal to Numerical (2)" to_port="example set input"/>
-      <connect from_op="Nominal to Numerical (2)" from_port="example set output" to_op="Numerical to Binominal" to_port="example set input"/>
-      <connect from_op="Numerical to Binominal" from_port="example set output" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Execute get_train" from_port="result 1" to_op="Validation" to_port="training"/>
       <connect from_op="Validation" from_port="model" to_op="Apply Model" to_port="model"/>
       <connect from_op="Validation" from_port="averagable 1" to_port="result 2"/>
+      <connect from_op="Execute get_test" from_port="result 1" to_op="Apply Model" to_port="unlabelled data"/>
       <connect from_op="Apply Model" from_port="labelled data" to_op="Write CSV" to_port="input"/>
       <connect from_op="Write CSV" from_port="through" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
